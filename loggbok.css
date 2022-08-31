@@ -1,0 +1,50 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    background-color: #3c3949;
+}
+#leftbox{
+    position: absolute;
+    left: 30px;
+    top: 100px;
+    width: 400px;
+    height: 2000px;
+}
+.box1{
+    position: absolute;
+    left: 50px;
+    height: 100px;
+    width: 200px;
+    background-color: rgb(141, 66, 56);
+}
+#box1a{
+    top: 10px;
+}
+#box1b{
+    top: 120px
+}
+#box1c{
+    top: 230px;
+}
+#box1d{
+    top: 340px
+}
+#box1e{
+    top: 450px;
+}
+#box1f{
+    top: 560px;
+}
+
+.box2{
+    position: absolute;
+    left: 500px;
+    height: 300px;
+    width: 400px;
+    background-color: rgb(141, 66, 56);
+}
+#box2a{
+    
+}
