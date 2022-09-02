@@ -1,31 +1,23 @@
 <?php
     require_once ("db.php");
 
-    $Datum = "0000-00-00";
-    $TidStart = "00:00:00";
-    $TidSlut = "00:00:00";
-    $Händelse = NULL;
-    $Kommentar = NULL;
+    $ProjektNamn = NULL;
     $Same = FALSE;
 
     if (!empty($_POST)){
-        $Datum = $_POST['Datum'];
-        $TidStart = $_POST['TidStart'] .":00";
-        $TidSlut = $_POST['TidSlut'] .":00";
-        $Händelse = $_POST['Händelse'];
-        $Kommentar = $_POST['Kommentar'];
+        $ProjektNamn = $_POST['ProjektNamn'];
     }
-    $sql = "SELECT * FROM `logg`";
+
+    $sql = "SELECT * FROM `projekt`";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // output data of each row
         while($row = $result->fetch_assoc()) {
-            if (($Datum == $row['Datum']) && ($TidStart == $row['TidStart']) && ($TidSlut == $row['TidSlut']) && ($Händelse == $row['Händelse']) && ($Kommentar == $row['Kommentar'])){
+            if ($ProjektNamn == $row['ProjektNamn']){
                 $Same = TRUE;
             }
 
-            echo "id: " .$row['id'] ." - Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
+            //echo "id: " .$row['id'] ." - Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
         }
     } 
     else {
@@ -33,7 +25,7 @@
     }
 
     if ($Same == FALSE){
-        $sql = "INSERT INTO `logg` (`id`, `Datum`, `TidStart`, `TidSlut`, `Händelse`, `Kommentar`) VALUES (NULL, '$Datum', '$TidStart', '$TidSlut', '$Händelse', '$Kommentar')";
+        $sql = "INSERT INTO `projekt` (`id`, `ProjektNamn`) VALUES (NULL, '$ProjektNamn')";
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully";
         } 
@@ -52,7 +44,7 @@
 </head>
 <body>
     <div id=leftbox>
-        <h1>Månad</h1>
+        <h1>September</h1>
         <div class="box1" id="box1a"><p>1</p></div>
         <div class="box1" id="box1b"><p>2</p></div>
         <div class="box1" id="box1c"><p>3</p></div>
@@ -64,11 +56,7 @@
         <!-- <a href="loggbok1.php"> -->
             <div class="box2" id="box2a">
                 <form method="post">
-                    Datum: <input type="date" name="Datum" required="require"><br>
-                    TidStart: <input type="time" name="TidStart" required="require"><br>
-                    TidSlut: <input type="time" name="TidSlut" required="require"><br>
-                    Händelse: <input type="text" name="Händelse" required="require"><br>
-                    Kommentar: <input type="text" name="Kommentar" required="require"><br>
+                    Projekt: <input type="varchar(20)" name="ProjektNamn" required="require">
                     <input type="submit">
                 </form>
             </div>

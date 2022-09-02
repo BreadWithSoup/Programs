@@ -1,16 +1,44 @@
 <?php
     require_once("db.php");
 
-    if (!empty($_POST)){
-        $Kommentar=$_POST['Kommentar'];
-    }
+    $Datum = "0000-00-00";
+    $TidStart = "00:00:00";
+    $TidSlut = "00:00:00";
+    $Händelse = NULL;
+    $Kommentar = NULL;
+    $Same = FALSE;
 
-    $sql = "INSERT INTO `logg` (`id`, `Datum`, `Tid`, `Händelse`, `Kommentar`) VALUES (NULL, '2022-09-01', '13:22', 'fixar insert data', '$Kommentar')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+    if (!empty($_POST)){
+        $Datum = $_POST['Datum'];
+        $TidStart = $_POST['TidStart'] .":00";
+        $TidSlut = $_POST['TidSlut'] .":00";
+        $Händelse = $_POST['Händelse'];
+        $Kommentar = $_POST['Kommentar'];
+    }
+    $sql = "SELECT * FROM `logg`";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            if (($Datum == $row['Datum']) && ($TidStart == $row['TidStart']) && ($TidSlut == $row['TidSlut']) && ($Händelse == $row['Händelse']) && ($Kommentar == $row['Kommentar'])){
+                $Same = TRUE;
+            }
+
+            echo "Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
+        }
     } 
     else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        //echo "0 results";
+    }
+
+    if ($Same == FALSE){
+        $sql = "INSERT INTO `logg` (`id`, `Datum`, `TidStart`, `TidSlut`, `Händelse`, `Kommentar`) VALUES (NULL, '$Datum', '$TidStart', '$TidSlut', '$Händelse', '$Kommentar')";
+        if ($conn->query($sql) === TRUE) {
+            //echo "New record created successfully";
+        } 
+        else {
+            echo "Error: " .$sql ."<br>" .$conn->error;
+        }
     }
 
 ?>
@@ -24,9 +52,12 @@
     <link rel="stylesheet" href="loggbok.css">
 </head>
 <body>
-    <form action="loggbok.php" method="post">
-        Kommentar: <input type="text" name="Kommentar"><br>
-        E-mail: <input type="text" name="email"><br>
+    <form method="post">
+        Datum: <input type="date" name="Datum" required="require"><br>
+        TidStart: <input type="time" name="TidStart" required="require"><br>
+        TidSlut: <input type="time" name="TidSlut" required="require"><br>
+        Händelse: <input type="text" name="Händelse" required="require"><br>
+        Kommentar: <input type="text" name="Kommentar" required="require"><br>
         <input type="submit">
     </form>
 </body>
