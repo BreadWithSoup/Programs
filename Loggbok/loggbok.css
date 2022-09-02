@@ -20,7 +20,7 @@ body{
 .box1{
     position: absolute;
     left: 50px;
-    height: 200px;
+    height: 100px;
     width: 200px;
     background-color: rgb(141, 66, 56);
 }
@@ -32,7 +32,7 @@ body{
     top: 100px;
 }
 #box1b{
-    top: 270px
+    top: 210px
 }
 #box1c{
     top: 320px;
