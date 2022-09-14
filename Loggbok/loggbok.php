@@ -16,7 +16,11 @@
             if ($ProjektNamn == $row['ProjektNamn']){
                 $Same = TRUE;
             }
+            if ($ProjektNamn == NULL){
+                $Same = TRUE;
+            }
 
+            //echo "ProjektNamn: " .$row['ProjektNamn'] ."<br>";
             //echo "id: " .$row['id'] ." - Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
         }
     } 
@@ -27,12 +31,15 @@
     if ($Same == FALSE){
         $sql = "INSERT INTO `projekt` (`id`, `ProjektNamn`) VALUES (NULL, '$ProjektNamn')";
         if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
+            //echo "New record created successfully";
         } 
         else {
             echo "Error: " .$sql ."<br>" .$conn->error;
         }
     }
+
+    $sql = "DELETE FROM `projekt` WHERE `projekt`.`id` = 21";
+
 ?>
 <html lang="en">
 <head>
@@ -53,17 +60,28 @@
         <div class="box1" id="box1f"><p>6</p></div>
     </div>
     <div id="rightbox">
-        <!-- <a href="loggbok1.php"> -->
-            <div class="box2" id="box2a">
-                <form method="post">
-                    Projekt: <input type="varchar(20)" name="ProjektNamn" required="require">
-                    <input type="submit">
-                </form>
-            </div>
-        <!-- </a> -->
-        <a href="loggbok2.php"><div class="box2" id="box2b"></div></a>
-        <a href="loggbok3.php"><div class="box2" id="box2c"></div></a>
-        <a href="loggbok4.php"><div class="box2" id="box2d"></div></a>
+        <form method="post">
+            Projekt: <input type="varchar(20)" name="ProjektNamn" required="require">
+            <input type="submit" value="Skapa">
+        </form>    
+        
+            <?php
+                $number = 0;
+                $sql = "SELECT * FROM `projekt`";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $number+=1;
+                        echo "<a href='loggbok" .$number .".php'>";
+                            echo "<div class='box2' id='box2" .$number ."'>";
+                                echo $row['ProjektNamn'] ."<br>"; 
+                            echo "</div>";
+                        echo "</a>";
+                        echo "<form method='post'><input type='button' value='Radera'></form>";
+                    }
+                }
+            ?>
+        
     </div>
 </body>
 <script src="loggbok.js"></script>

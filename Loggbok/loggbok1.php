@@ -27,6 +27,7 @@
             echo "Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
         }
     } 
+    
     else {
         //echo "0 results";
     }
@@ -60,5 +61,6 @@
         Kommentar: <input type="text" name="Kommentar" required="require"><br>
         <input type="submit">
     </form>
+    <a href="loggbok.php"><div class="box1" id="box1d"><p>Hem</p></div> </a>
 </body>
 <script src="loggbok.js"></script>
