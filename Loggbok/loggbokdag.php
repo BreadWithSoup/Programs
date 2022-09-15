@@ -1,11 +1,11 @@
 <?php
     require_once("db.php");
-    if (!empty($_GET['namn'])){
-        $sql = "SELECT * FROM projekt WHERE id=" .$_GET['namn'];
-        $Projekt = $_GET['namn'];
+    if (!empty($_GET['datum'])){
+        $sql = "SELECT * FROM projekt WHERE id=" .$_GET['datum'];
     }
     
-    $Datum = "0000-00-00";
+    $Projekt = NULL;
+    $Datum = $_GET['datum'];
     $TidStart = "00:00:00";
     $TidSlut = "00:00:00";
     $Händelse = NULL;
@@ -13,7 +13,7 @@
     $Same = FALSE;
 
     if (!empty($_POST)){
-        $Datum = $_POST['Datum'];
+        $Projekt = $_POST['Projekt'];
         $TidStart = $_POST['TidStart'] .":00";
         $TidSlut = $_POST['TidSlut'] .":00";
         $Händelse = $_POST['Händelse'];
@@ -21,16 +21,16 @@
     }
     $sql = "SELECT * FROM `logg`";
     $result = $conn->query($sql);
-    if (($Datum == "0000-00-00") && ($TidStart == "00:00:00") && ($TidSlut == "00:00:00") && ($Händelse == NULL) && ($Kommentar == NULL)){
+    if (($Projekt == NULL) && ($TidStart == "00:00:00") && ($TidSlut == "00:00:00") && ($Händelse == NULL) && ($Kommentar == NULL)){
         $Same = TRUE;
     }
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            if (($Datum == $row['Datum']) && ($TidStart == $row['TidStart']) && ($TidSlut == $row['TidSlut']) && ($Händelse == $row['Händelse']) && ($Kommentar == $row['Kommentar'])){
+            if (($Projekt == $row['Projekt']) && ($TidStart == $row['TidStart']) && ($TidSlut == $row['TidSlut']) && ($Händelse == $row['Händelse']) && ($Kommentar == $row['Kommentar'])){
                 $Same = TRUE;
             }
-            if ($row['Projekt'] == $Projekt){
-                echo "Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
+            if ($row['Datum'] == $Datum){
+                echo "Projekt: " .$row['Projekt'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
             }
         }
     } 
@@ -61,7 +61,7 @@
 </head>
 <body>
     <form method="post">
-        Datum: <input type="date" name="Datum" required="require"><br>
+        Projekt: <input type="text" name="Projekt" required="require"><br>
         TidStart: <input type="time" name="TidStart" required="require"><br>
         TidSlut: <input type="time" name="TidSlut" required="require"><br>
         Händelse: <input type="text" name="Händelse" required="require"><br>

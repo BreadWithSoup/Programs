@@ -57,25 +57,28 @@
         $m = date('m');
         $dag = 2;
         $timestamp = mktime(0, 0, 0, ($m), $dag);
+        $Dat = gmdate("Y-M", $timestamp);
         $Date = gmdate("Y-m-d", $timestamp);
-        $dm = cal_days_in_month(CAL_GREGORIAN,$m,2022);
+        $dm = cal_days_in_month(CAL_GREGORIAN,$m,2022); 
         echo "<div id='leftbox'>";
-            echo "<h1>" .date('MY') ."</h1>";
+            echo "<h1>" .$Dat ."</h1>";
             echo "<div id='daybox'>";
             while ($m < 12) {
-                $d = 0;
-                $dm = cal_days_in_month(CAL_GREGORIAN,($m += 1),2022);
-                while ($d < $dm) {
+                $d = 1;
+                $dag = 2;
+                $dm = cal_days_in_month(CAL_GREGORIAN,($m),2022);
+                while ($d < ($dm+1)) {
                     echo "<a href='loggbokdag.php?datum=" .$Date ."'>";
-                        echo "<div class='box1' id=><p>" .($d += 1) ."</p></div>";
+                        echo "<div class='box1' id=><p>" .$d ."</p></div>";
                     echo "</a>";
+                    $dag += 1;
+                    $d += 1;
                     $timestamp = mktime(0, 0, 0, $m, $dag);
+                    $Dat = gmdate("Y-M", $timestamp);
                     $Date = gmdate("Y-m-d", $timestamp);
                 }
-                
-                
-                echo "<h1>" .$Date ."</h1>";
-                $dm = cal_days_in_month(CAL_GREGORIAN,$m,2022);
+                $m += 1;
+                echo "<h1>" .$Dat ."</h1>";               
             }
             echo "</div>";
         echo "</div>";
