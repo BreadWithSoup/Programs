@@ -1,6 +1,11 @@
 <?php
     require_once("db.php");
-
+    if (!empty($_GET['namn'])){
+        $sql = "SELECT * FROM projekt WHERE id=" .$_GET['namn'];
+        echo $sql;
+        $Projekt = $_GET['namn'];
+    }
+    
     $Datum = "0000-00-00";
     $TidStart = "00:00:00";
     $TidSlut = "00:00:00";
@@ -23,8 +28,9 @@
             if (($Datum == $row['Datum']) && ($TidStart == $row['TidStart']) && ($TidSlut == $row['TidSlut']) && ($Händelse == $row['Händelse']) && ($Kommentar == $row['Kommentar'])){
                 $Same = TRUE;
             }
-
-            echo "Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
+            if ($row['Projekt'] == $Projekt){
+                echo "Datum: " .$row['Datum'] ." - TidStart: " .$row['TidStart'] ." - TidSlut: " .$row['TidSlut'] ." - Händelse: " .$row['Händelse'] ." - Kommentar: " .$row['Kommentar'] ."<br>";
+            }
         }
     } 
     
@@ -33,7 +39,7 @@
     }
 
     if ($Same == FALSE){
-        $sql = "INSERT INTO `logg` (`id`, `Datum`, `TidStart`, `TidSlut`, `Händelse`, `Kommentar`) VALUES (NULL, '$Datum', '$TidStart', '$TidSlut', '$Händelse', '$Kommentar')";
+        $sql = "INSERT INTO `logg` (`id`, `Projekt`, `Datum`, `TidStart`, `TidSlut`, `Händelse`, `Kommentar`) VALUES (NULL, '$Projekt', '$Datum', '$TidStart', '$TidSlut', '$Händelse', '$Kommentar')";
         if ($conn->query($sql) === TRUE) {
             //echo "New record created successfully";
         } 
