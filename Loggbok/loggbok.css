@@ -10,6 +10,11 @@ body{
     position: fixed;
     width: 25vw;
     height: 100vh;
+    
+}
+#daybox{
+    width: 25vw;
+    height: 80vh;
     overflow-y: scroll;
 }
 #leftbox h1{

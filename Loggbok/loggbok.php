@@ -1,5 +1,6 @@
 <?php
     require_once ("db.php");
+
     if (!empty($_POST['id'])){
             
         $PostID = $_POST['id'];
@@ -52,57 +53,57 @@
     <link rel="stylesheet" href="loggbok.css">
 </head>
 <body>
-    <div id="body2">
-        <div id="leftbox">
-            <h1>September</h1>
-            <div class="box1" id="box1a"><p>1</p></div>
-            <div class="box1" id="box1b"><p>2</p></div>
-            <div class="box1" id="box1c"><p>3</p></div>
-            <div class="box1" id="box1d"><p>4</p></div>
-            <div class="box1" id="box1e"><p>5</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-            <div class="box1" id="box1f"><p>6</p></div>
-
-        </div>
-        <div id="rightbox">
-            <?php
+    <?php
+        $m = date('m');
+        $dag = 2;
+        $timestamp = mktime(0, 0, 0, ($m), $dag);
+        $Date = gmdate("Y-m-d", $timestamp);
+        $dm = cal_days_in_month(CAL_GREGORIAN,$m,2022);
+        echo "<div id='leftbox'>";
+            echo "<h1>" .date('MY') ."</h1>";
+            echo "<div id='daybox'>";
+            while ($m < 12) {
+                $d = 0;
+                $dm = cal_days_in_month(CAL_GREGORIAN,($m += 1),2022);
+                while ($d < $dm) {
+                    echo "<a href='loggbokdag.php?datum=" .$Date ."'>";
+                        echo "<div class='box1' id=><p>" .($d += 1) ."</p></div>";
+                    echo "</a>";
+                    $timestamp = mktime(0, 0, 0, $m, $dag);
+                    $Date = gmdate("Y-m-d", $timestamp);
+                }
+                
+                
+                echo "<h1>" .$Date ."</h1>";
+                $dm = cal_days_in_month(CAL_GREGORIAN,$m,2022);
+            }
+            echo "</div>";
+        echo "</div>";
+        echo "<div id='rightbox'>";
+            $number = 0;
+            $sql = "SELECT * FROM `projekt`";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
                     $number = 0;
-                    $sql = "SELECT * FROM `projekt`";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            $number = 0;
-                            echo "<a href='loggbok1.php?namn=" .$row['ProjektNamn'] ."'>";
-                            echo "<div class='box2' id='box2" .$number ."'>";
-                            echo $row['ProjektNamn'] ."<br>"; 
-                            echo "</a>";
-                            echo "<form method='post'>";
+                    echo "<a href='loggbok1.php?namn=" .$row['ProjektNamn'] ."'>";
+                    echo "<div class='box2' id='box2" .$number ."'>";
+                        echo $row['ProjektNamn'] ."<br>"; 
+                        echo "</a>";
+                        echo "<form method='post'>";
                             echo "<input type='hidden' name='id' value='" .$row['id'] ."'>";
                             echo "<input type='submit' value='Radera'>";
-                            echo "</form>";
-                            echo "</div>";
-                        }
-                    }
-                        ?>  
-                            <div class='box2' id='box20'>
-                                <form method="post">
-                                    Projekt: <input type="varchar(20)" name="ProjektNamn" required="require">
-                                    <input type="submit" value="Skapa">
-                                </form>    
-                            </div>
-                        <?php
-                    ?>
-            
+                        echo "</form>";
+                    echo "</div>";
+                }
+            }
+    ?>  
+                <div class='box2' id='box20'>
+                    <form method="post">
+                        Projekt: <input type="varchar(20)" name="ProjektNamn" required="require">
+                        <input type="submit" value="Skapa">
+                    </form>    
+                </div>
         </div>
-    </div>
 </body>
 <script src="loggbok.js"></script>
