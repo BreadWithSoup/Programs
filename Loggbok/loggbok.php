@@ -54,8 +54,9 @@
 </head>
 <body>
     <?php
-        $m = date('m');
+        $m = 1;
         $dag = 2;
+        $List = array();
         $timestamp = mktime(0, 0, 0, ($m), $dag);
         $Dat = gmdate("Y-M", $timestamp);
         $Date = gmdate("Y-m-d", $timestamp);
@@ -63,13 +64,27 @@
         echo "<div id='leftbox'>";
             echo "<h1>" .$Dat ."</h1>";
             echo "<div id='daybox'>";
-            while ($m < 12) {
+            while ($m <= 12) {
                 $d = 1;
                 $dag = 2;
                 $dm = cal_days_in_month(CAL_GREGORIAN,($m),2022);
                 while ($d < ($dm+1)) {
                     echo "<a href='loggbokdag.php?datum=" .$Date ."'>";
-                        echo "<div class='box1' id=><p>" .$d ."</p></div>";
+                        echo "<div class='box1' id=><p>" .$d; 
+                            $sql = "SELECT * FROM `logg` ORDER BY Projekt DESC";
+                            $result = $conn->query($sql);
+                            $Pr = NULL;
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()) {
+                                    if ($Date == $row['Datum']) {
+                                        if ($Pr != $row['Projekt']) {
+                                            $Pr = $row['Projekt'];
+                                            echo " " .$Pr;
+                                        }
+                                    }
+                                }
+                            }
+                        echo "</p></div>";
                     echo "</a>";
                     $dag += 1;
                     $d += 1;
@@ -77,8 +92,10 @@
                     $Dat = gmdate("Y-M", $timestamp);
                     $Date = gmdate("Y-m-d", $timestamp);
                 }
+                if ($m != 12){    
+                    echo "<h1>" .$Dat ."</h1>";               
+                }
                 $m += 1;
-                echo "<h1>" .$Dat ."</h1>";               
             }
             echo "</div>";
         echo "</div>";
